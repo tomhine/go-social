@@ -16,6 +16,7 @@ alias ds := docker-stop
 alias migcreate := migrate-create
 alias migup := migrate-up
 alias migdown := migrate-down
+alias db := tablepro
 
 # Development commands
 [continue]
@@ -27,6 +28,9 @@ docker-up:
 
 docker-stop:
     @docker compose stop
+
+tablepro:
+    open -b com.TablePro "{{db_addr}}"
 
 # Migration commands
 migrate-create name:

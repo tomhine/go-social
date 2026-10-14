@@ -18,26 +18,38 @@ alias migup := migrate-up
 alias migdown := migrate-down
 alias db := tablepro
 
-# Development commands
+# Start all development processes
+[group('dev')]
 [continue]
 dev: docker-up && docker-stop
     -@air
 
+# Start the project docker containers
+[group('dev')]
 docker-up:
     @docker compose up -d
 
+# Stop the project docker containers
+[group('dev')]
 docker-stop:
     @docker compose stop
 
+# Open the postgres database in TablePro
+[group('dev')]
 tablepro:
     open -b com.TablePro "{{db_addr}}"
 
-# Migration commands
+# Create a new migration
+[group('migrate')]
 migrate-create name:
 	@migrate create -seq -ext sql -dir {{migrations_path}} {{name}}
 
+# Run any pending up migrations
+[group('migrate')]
 migrate-up:
 	@migrate -path={{migrations_path}} -database={{db_addr}} up
 
+# Run the down migrations
+[group('migrate')]
 migrate-down level='1':
     @migrate -path={{migrations_path}} -database={{db_addr}} down {{level}}
